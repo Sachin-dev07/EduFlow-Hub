@@ -16,8 +16,9 @@ import ParentGrades from "./pages/parent/ParentGrades";
 import ParentAssignments from "./pages/parent/ParentAssignments";
 import ParentMessages from "./pages/parent/ParentMessages";
 
-import Login from "./pages/Login";
+import LoginPage from "./pages/LoginPage";
 import Signup from "./pages/auth/Signup";
+import AdminPanel from "./pages/admin/AdminPanel";
 import Unauthorized from "./pages/Unauthorized";
 import NotFound from "./pages/NotFound";
 
@@ -30,32 +31,41 @@ const App = () => (
       <Routes>
 
         {/* ================= PUBLIC ROUTES ================= */}
-        <Route path="/login" element={<Login />} />
+        <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/unauthorized" element={<Unauthorized />} />
 
-        {/* ================= TEACHER ROUTES ================= */}
-        <Route element={<RequireAuth roles={["teacher"]} />}>
+        {/* ================= ADMIN ONLY ROUTE ================= */}
+        <Route element={<RequireAuth roles={["admin"]} />}>
+          <Route path="/admin" element={<AdminPanel />} />
+        </Route>
+
+        {/* ================= SHARED ROUTES (Admin, Teacher, Student) ================= */}
+        <Route element={<RequireAuth roles={["admin", "teacher", "student"]} />}>
           <Route path="/" element={<Index />} />
           <Route path="/courses" element={<Courses />} />
           <Route path="/assignments" element={<Assignments />} />
-          <Route path="/students" element={<Students />} />
           <Route path="/grades" element={<Grades />} />
           <Route path="/messages" element={<Messages />} />
           <Route path="/settings" element={<Settings />} />
         </Route>
 
+        {/* ================= TEACHER/STUDENT SPECIFIC ================= */}
+        <Route element={<RequireAuth roles={["admin", "teacher"]} />}>
+          <Route path="/students" element={<Students />} />
+        </Route>
+
+        {/* ================= STUDENT DASHBOARD ================= */}
+        <Route element={<RequireAuth roles={["student"]} />}>
+          <Route path="/student" element={<Index />} />
+        </Route>
+
         {/* ================= PARENT ROUTES ================= */}
-        <Route element={<RequireAuth roles={["parent"]} />}>
+        <Route element={<RequireAuth roles={["admin", "parent"]} />}>
           <Route path="/parent" element={<ParentPortal />} />
           <Route path="/parent/grades" element={<ParentGrades />} />
           <Route path="/parent/assignments" element={<ParentAssignments />} />
           <Route path="/parent/messages" element={<ParentMessages />} />
-        </Route>
-
-        {/* ================= STUDENT ROUTES ================= */}
-        <Route element={<RequireAuth roles={["student"]} />}>
-          <Route path="/student" element={<Index />} />
         </Route>
 
         {/* ================= FALLBACK ================= */}

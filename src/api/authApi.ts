@@ -16,3 +16,7 @@ export const updateProfile = async (data: any) => {
   return res.data;
 };
 
+export const forgotPassword = async (email: string) => {
+  const res = await apiClient.post("/auth/forgot-password", { email });
+  return res.data;
+};

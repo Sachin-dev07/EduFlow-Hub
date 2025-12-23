@@ -25,7 +25,7 @@ export function CourseCard({
   image,
 }: CourseCardProps) {
   return (
-    <div className="group relative overflow-hidden rounded-xl border border-border bg-card shadow-card transition-all duration-300 hover:-translate-y-1 hover:shadow-card-hover">
+    <div className="group relative overflow-hidden rounded-3xl glass-card transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl dark:bg-black/40">
       {/* Header with gradient */}
       <div
         className={cn(
@@ -41,14 +41,14 @@ export function CourseCard({
           />
         )}
         <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
-        
+
         {/* Badge */}
         <div className="absolute left-4 top-4">
           <span className="inline-flex items-center rounded-full bg-white/20 px-2.5 py-0.5 text-xs font-medium text-white backdrop-blur-sm">
             {subject}
           </span>
         </div>
-        
+
         <Button
           variant="ghost"
           size="icon"

@@ -5,10 +5,12 @@ import { useNavigate } from "react-router-dom";
 import CreateCourseModal from "@/components/courses/CreateCourseModal";
 import CreateAssignmentModal from "@/components/assignments/CreateAssignmentModal";
 import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/contexts/AuthContext";
 
 export function QuickActions() {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { user } = useAuth();
   const [showCourseModal, setShowCourseModal] = useState(false);
   const [showAssignmentModal, setShowAssignmentModal] = useState(false);
 
@@ -22,40 +24,55 @@ export function QuickActions() {
     window.location.reload(); // Simple refresh for now
   };
 
+  // Check if user can perform actions (only admin)
+  const canPerformActions = user?.role === "admin";
+
+  const showContactAdminMessage = () => {
+    toast({
+      title: "Access Restricted",
+      description: "Please contact the administration to perform this action.",
+      variant: "destructive",
+    });
+  };
+
   const actions = [
     {
       label: "Create Course",
       icon: Plus,
       variant: "gradient" as const,
-      onClick: () => setShowCourseModal(true),
+      onClick: () => canPerformActions ? setShowCourseModal(true) : showContactAdminMessage(),
     },
     {
       label: "New Assignment",
       icon: FileText,
       variant: "outline" as const,
-      onClick: () => setShowAssignmentModal(true),
+      onClick: () => canPerformActions ? setShowAssignmentModal(true) : showContactAdminMessage(),
     },
     {
       label: "Add Student",
       icon: Users,
       variant: "outline" as const,
-      onClick: () => navigate("/students"),
+      onClick: () => canPerformActions ? navigate("/students") : showContactAdminMessage(),
     },
     {
       label: "Send Message",
       icon: MessageSquare,
       variant: "outline" as const,
-      onClick: () => navigate("/messages"),
+      onClick: () => navigate("/messages"), // Everyone can send messages
     },
     {
       label: "Schedule Event",
       icon: Calendar,
       variant: "outline" as const,
       onClick: () => {
-        toast({
-          title: "Coming Soon",
-          description: "Event scheduling feature will be available soon!",
-        });
+        if (canPerformActions) {
+          toast({
+            title: "Coming Soon",
+            description: "Event scheduling feature will be available soon!",
+          });
+        } else {
+          showContactAdminMessage();
+        }
       },
     },
     {
@@ -63,10 +80,14 @@ export function QuickActions() {
       icon: Upload,
       variant: "outline" as const,
       onClick: () => {
-        toast({
-          title: "Coming Soon",
-          description: "Content upload feature will be available soon!",
-        });
+        if (canPerformActions) {
+          toast({
+            title: "Coming Soon",
+            description: "Content upload feature will be available soon!",
+          });
+        } else {
+          showContactAdminMessage();
+        }
       },
     },
   ];

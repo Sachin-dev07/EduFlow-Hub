@@ -6,6 +6,10 @@ import connectDB from "./config/db.js";
 import authRoutes from "./routes/authRoutes.js";
 import assignmentRoutes from "./routes/assignmentRoutes.js";
 import courseRoutes from "./routes/courseRoutes.js";
+import userRoutes from "./routes/userRoutes.js";
+import eventRoutes from "./routes/eventRoutes.js";
+import messageRoutes from "./routes/messageRoutes.js";
+import resourceRoutes from "./routes/resourceRoutes.js";
 
 
 dotenv.config();
@@ -22,6 +26,10 @@ connectDB();
 app.use("/api/auth", authRoutes);
 app.use("/api/assignments", assignmentRoutes);
 app.use("/api/courses", courseRoutes);
+app.use("/api/users", userRoutes);
+app.use("/api/events", eventRoutes);
+app.use("/api/messages", messageRoutes);
+app.use("/api/resources", resourceRoutes);
 
 // Error Handler
 app.use((err, req, res, next) => {

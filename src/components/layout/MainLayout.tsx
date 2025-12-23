@@ -13,13 +13,13 @@ export function MainLayout({ children }: MainLayoutProps) {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-transparent">
       <Sidebar />
 
       <main className="pl-64 transition-all duration-300">
         {/* 🔹 TOP BAR (ONLY ADDED PART) */}
-        <div className="flex justify-end items-center gap-3 px-6 py-3 border-b bg-background">
-          
+        <div className="flex justify-end items-center gap-3 px-6 py-3 border-b border-white/20 bg-white/40 backdrop-blur-md sticky top-0 z-50 shadow-sm">
+
           {/* ❌ NOT LOGGED IN */}
           {!user && (
             <>
@@ -36,12 +36,13 @@ export function MainLayout({ children }: MainLayoutProps) {
           {/* ✅ LOGGED IN */}
           {user && (
             <>
-              <span className="text-sm text-muted-foreground">
+              <span className="text-sm font-medium text-muted-foreground bg-white/30 px-3 py-1 rounded-full border border-white/10">
                 {user.email}
               </span>
 
               <Button
                 variant="outline"
+                className="bg-white/20 border-white/20 hover:bg-white/40 text-destructive hover:text-destructive"
                 onClick={() => {
                   logout();
                   navigate("/login");

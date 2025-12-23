@@ -24,8 +24,14 @@ const userSchema = new mongoose.Schema(
 
     role: {
       type: String,
-      enum: ["teacher", "student", "parent"],
+      enum: ["admin", "teacher", "student", "parent"],
       default: "student",
+    },
+
+    // Grade/Class for students
+    grade: {
+      type: String,
+      default: "",
     },
 
     // 🔽 NEW FIELDS (for Settings page)

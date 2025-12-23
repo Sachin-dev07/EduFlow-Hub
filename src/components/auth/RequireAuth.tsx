@@ -2,7 +2,7 @@ import { Navigate, Outlet } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 
 type Props = {
-  roles: Array<"teacher" | "parent" | "student">;
+  roles: Array<"admin" | "teacher" | "parent" | "student">;
 };
 
 const RequireAuth = ({ roles }: Props) => {

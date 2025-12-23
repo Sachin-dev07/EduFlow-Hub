@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
+import { useAuth } from "@/contexts/AuthContext";
 
 const navigation = [
   { name: "Overview", href: "/parent", icon: LayoutDashboard },
@@ -28,25 +29,26 @@ interface ParentLayoutProps {
 export function ParentLayout({ children }: ParentLayoutProps) {
   const [collapsed, setCollapsed] = useState(false);
   const location = useLocation();
+  const { user } = useAuth();
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-accent/5 via-background to-primary/5">
+    <div className="min-h-screen bg-transparent">
       {/* Sidebar */}
       <aside
         className={cn(
-          "fixed left-0 top-0 z-40 flex h-screen flex-col border-r border-sidebar-border bg-sidebar transition-all duration-300",
+          "fixed left-0 top-0 z-40 flex h-screen flex-col border-r border-white/20 bg-white/60 backdrop-blur-xl transition-all duration-300 dark:bg-black/60",
           collapsed ? "w-20" : "w-64"
         )}
       >
         {/* Logo */}
-        <div className="flex h-16 items-center justify-between border-b border-sidebar-border px-4">
+        <div className="flex h-16 items-center justify-between border-b border-white/10 px-4">
           <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-accent shadow-md">
-              <Users className="h-5 w-5 text-accent-foreground" />
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-teal-500 to-emerald-600 shadow-md">
+              <Users className="h-5 w-5 text-white" />
             </div>
             {!collapsed && (
               <div>
-                <span className="text-lg font-semibold text-sidebar-foreground">
+                <span className="text-lg font-bold text-foreground">
                   Parent Portal
                 </span>
                 <p className="text-xs text-muted-foreground">EduLearn</p>
@@ -57,7 +59,7 @@ export function ParentLayout({ children }: ParentLayoutProps) {
             variant="ghost"
             size="icon"
             onClick={() => setCollapsed(!collapsed)}
-            className="h-8 w-8 text-muted-foreground hover:text-foreground"
+            className="h-8 w-8 text-muted-foreground hover:text-foreground hover:bg-white/20 rounded-full"
           >
             <ChevronLeft
               className={cn(
@@ -77,21 +79,21 @@ export function ParentLayout({ children }: ParentLayoutProps) {
                 key={item.name}
                 to={item.href}
                 className={cn(
-                  "group flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all duration-200",
+                  "group flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all duration-200",
                   isActive
-                    ? "bg-accent/10 text-accent"
-                    : "text-muted-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
+                    ? "bg-gradient-to-r from-teal-500/10 to-emerald-500/10 text-teal-600 dark:text-teal-400 shadow-inner"
+                    : "text-muted-foreground hover:bg-white/40 hover:text-foreground"
                 )}
               >
                 <item.icon
                   className={cn(
                     "h-5 w-5 flex-shrink-0 transition-colors",
-                    isActive ? "text-accent" : "text-muted-foreground group-hover:text-foreground"
+                    isActive ? "text-teal-600 dark:text-teal-400" : "text-muted-foreground group-hover:text-foreground"
                   )}
                 />
                 {!collapsed && <span>{item.name}</span>}
                 {isActive && (
-                  <div className="ml-auto h-1.5 w-1.5 rounded-full bg-accent" />
+                  <div className="ml-auto h-1.5 w-1.5 rounded-full bg-teal-500 shadow-sm" />
                 )}
               </NavLink>
             );
@@ -99,10 +101,10 @@ export function ParentLayout({ children }: ParentLayoutProps) {
         </nav>
 
         {/* Back to main */}
-        <div className="border-t border-sidebar-border p-3">
+        <div className="border-t border-white/10 p-3">
           <NavLink
             to="/"
-            className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
+            className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-white/40 hover:text-foreground"
           >
             <ChevronLeft className="h-5 w-5" />
             {!collapsed && <span>Back to Main</span>}
@@ -110,24 +112,26 @@ export function ParentLayout({ children }: ParentLayoutProps) {
         </div>
 
         {/* Parent info */}
-        <div className="border-t border-sidebar-border p-4">
+        <div className="border-t border-white/10 p-4 bg-white/10">
           <div className="flex items-center gap-3">
             <div className="relative">
-              <div className="h-10 w-10 rounded-full bg-gradient-primary" />
-              <div className="absolute -right-0.5 -top-0.5 h-3 w-3 rounded-full border-2 border-sidebar bg-success" />
+              <div className="h-10 w-10 rounded-full bg-gradient-to-br from-teal-500 to-emerald-600 flex items-center justify-center text-white font-bold shadow-md">
+                {user?.name?.charAt(0) || "P"}
+              </div>
+              <div className="absolute -right-0.5 -top-0.5 h-3 w-3 rounded-full border-2 border-white bg-green-500" />
             </div>
             {!collapsed && (
               <div className="flex-1 min-w-0">
-                <p className="truncate text-sm font-medium text-sidebar-foreground">
-                  John Davis
+                <p className="truncate text-sm font-bold text-foreground">
+                  {user?.name || "Parent"}
                 </p>
                 <p className="truncate text-xs text-muted-foreground">
-                  Parent of Emma
+                  Parent Portal User
                 </p>
               </div>
             )}
             {!collapsed && (
-              <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground">
+              <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:bg-white/20 rounded-full">
                 <Bell className="h-4 w-4" />
               </Button>
             )}

@@ -8,7 +8,7 @@ import {
 
 /* ================= TYPES ================= */
 
-export type Role = "teacher" | "student" | "parent";
+export type Role = "admin" | "teacher" | "student" | "parent";
 
 export type User = {
   id: string;

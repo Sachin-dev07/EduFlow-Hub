@@ -4,7 +4,8 @@ import {
   getAssignments,
   createAssignment,
   updateAssignment,
-  deleteAssignment
+  deleteAssignment,
+  gradeAssignment
 } from "../controllers/assignmentController.js";
 
 const router = express.Router();
@@ -20,5 +21,8 @@ router.put("/:id", protect, authorizeRoles("teacher"), updateAssignment);
 
 // Delete assignment (teachers only)
 router.delete("/:id", protect, authorizeRoles("teacher"), deleteAssignment);
+
+// Grade assignment (teachers only)
+router.post("/:id/grade", protect, authorizeRoles("teacher"), gradeAssignment);
 
 export default router;

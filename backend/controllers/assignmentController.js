@@ -3,7 +3,9 @@ import Assignment from "../models/Assignment.js";
 // GET ALL ASSIGNMENTS
 export const getAssignments = async (req, res) => {
   try {
-    const assignments = await Assignment.find({}).populate("createdBy", "name email");
+    const assignments = await Assignment.find({})
+      .populate("createdBy", "name email")
+      .populate("submissions.student", "name email");
     return res.status(200).json(assignments);
   } catch (error) {
     console.error("GET ERROR:", error);
@@ -81,6 +83,45 @@ export const deleteAssignment = async (req, res) => {
     res.json({ message: "Assignment deleted successfully" });
   } catch (err) {
     console.error("Delete Error:", err);
+    res.status(500).json({ message: "Server Error" });
+  }
+};
+
+// GRADE ASSIGNMENT
+export const gradeAssignment = async (req, res) => {
+  try {
+    const { studentId, grade, feedback } = req.body;
+    const assignment = await Assignment.findById(req.params.id);
+
+    if (!assignment) {
+      return res.status(404).json({ message: "Assignment not found" });
+    }
+
+    // Check if submission exists
+    const submissionIndex = assignment.submissions.findIndex(
+      (s) => s.student.toString() === studentId
+    );
+
+    if (submissionIndex > -1) {
+      // Update existing
+      assignment.submissions[submissionIndex].grade = grade;
+      assignment.submissions[submissionIndex].feedback = feedback;
+      assignment.submissions[submissionIndex].status = "graded";
+    } else {
+      // Create new submission entry (if teacher grading without student submission)
+      assignment.submissions.push({
+        student: studentId,
+        grade,
+        feedback,
+        status: "graded",
+        submittedAt: new Date()
+      });
+    }
+
+    await assignment.save();
+    res.json(assignment);
+  } catch (err) {
+    console.error("Grade Error:", err);
     res.status(500).json({ message: "Server Error" });
   }
 };

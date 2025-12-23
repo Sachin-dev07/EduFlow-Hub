@@ -23,3 +23,9 @@ export const deleteAssignment = async (id: string) => {
   const res = await apiClient.delete(`/assignments/${id}`);
   return res.data;
 };
+
+// Grade an assignment
+export const gradeAssignment = async (id: string, gradeData: { studentId: string; grade: number; feedback?: string }) => {
+  const res = await apiClient.post(`/assignments/${id}/grade`, gradeData);
+  return res.data;
+};
