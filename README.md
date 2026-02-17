@@ -2,8 +2,6 @@
 
 A comprehensive, modern Educational Management Platform built with the MERN stack (MongoDB, Express, React, Node.js).
 
-![EduFlow Hub](https://via.placeholder.com/800x400?text=EduFlow+Hub+Dashboard)
-
 ## ✨ Features
 
 - **🎨 Advanced Glassmorphism UI**: Premium aesthetic with animated backgrounds, translucent cards, and dynamic gradients.
@@ -21,7 +19,6 @@ A comprehensive, modern Educational Management Platform built with the MERN stac
 - **📊 Analytics**: Visual progress tracking and attendance monitoring.
 
 ## 🛠️ Tech Stack
-
 - **Frontend**: React (Vite), Tailwind CSS, Lucide Icons, Shadcn/UI (components).
 - **Backend**: Node.js, Express.js, MongoDB (Mongoose).
 - **Authentication**: JWT (JSON Web Tokens).
@@ -54,15 +51,7 @@ A comprehensive, modern Educational Management Platform built with the MERN stac
    ```
 
 3. **Environment Setup**
-   - Create `.env` in the root (Frontend):
-     ```env
-     VITE_API_URL=http://localhost:5005/api
-     ```
-   - Create `.env` in `/backend`:
-     ```env
-     PORT=5005
-     MONGO_URI=mongodb://localhost:27017/eduflow
-     JWT_SECRET=your_super_secret_key
+
      ```
 
 4. **Run Locally**
